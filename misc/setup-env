@@ -1,0 +1,38 @@
+#!/bin/sh
+# Setup enviroment for OpenEmbedded
+# Adrian Alonso <aalonso00@gmail.com>
+
+OEBASE=${HOME}/workspace/oe
+MACHINE=$1
+
+# Set default machine if not provided as argument
+[[ -z ${MACHINE} ]] && MACHINE="xilinx-ml507"
+
+unset BBPATH
+
+case "${MACHINE}" in
+	"xilinx-ml507")
+		BBPATH="${OEBASE}/openembedded-xlnx"
+	;;
+	"xilinx-spartan3e")
+		BBPATH="${OEBASE}/openembedded-xlnx"
+	;;
+	"beagleboard")
+		BBPATH=""
+	;;
+	"qemumips")
+		BBPATH=""
+	;;
+	*)
+		echo -e "Error unsorpported target"
+		exit -1
+	;;
+esac
+
+[[ -z ${OEBASE} ]] && export OEBASE=${OEBASE}
+[[ -z ${BB_ENV_EXTRAWHITE} ]] && export BB_ENV_EXTRAWHITE="OEBASE"
+
+export BBPATH=${BBPATH}:${OEBASE}/build-${MACHINE}:${OEBASE}/openembedded
+export PATH=${PATH}:${OEBASE}/bitbake/bin
+cd ${OEBASE}/build-${MACHINE}/conf
+
