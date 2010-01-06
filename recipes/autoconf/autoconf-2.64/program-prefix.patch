@@ -1,0 +1,28 @@
+From 75b72d5aad253703e926213d332182d02f9657d4 Mon Sep 17 00:00:00 2001
+From: aalonso <aalonso00@gmail.com>
+Date: Mon, 14 Dec 2009 23:17:59 -0600
+Subject: [PATCH] program-prefix
+
+---
+ lib/autoconf/general.m4 |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/lib/autoconf/general.m4 b/lib/autoconf/general.m4
+index f030c26..31ffef9 100644
+--- a/lib/autoconf/general.m4
++++ b/lib/autoconf/general.m4
+@@ -1854,8 +1854,9 @@ _AC_CANONICAL_SPLIT([target])
+ # The aliases save the names the user supplied, while $host etc.
+ # will get canonicalized.
+ test -n "$target_alias" &&
+-  test "$program_prefix$program_suffix$program_transform_name" = \
+-    NONENONEs,x,x, &&
++  test "$target_alias" != "$host_alias" &&
++    test "$program_prefix$program_suffix$program_transform_name" = \
++      NONENONEs,x,x, &&
+   program_prefix=${target_alias}-[]dnl
+ ])# AC_CANONICAL_TARGET
+ 
+-- 
+1.6.5.2
+

@@ -1,0 +1,127 @@
+From 2f3b0cc900dc282eec3440c1b04459e48b246d06 Mon Sep 17 00:00:00 2001
+From: aalonso <aalonso00@gmail.com>
+Date: Mon, 14 Dec 2009 22:57:26 -0600
+Subject: [PATCH] autoreconf-exclude
+
+---
+ bin/autoreconf.in |   41 ++++++++++++++++++++++++++++++++++++-----
+ 1 files changed, 36 insertions(+), 5 deletions(-)
+
+diff --git a/bin/autoreconf.in b/bin/autoreconf.in
+index 2eae717..acd9794 100644
+--- a/bin/autoreconf.in
++++ b/bin/autoreconf.in
+@@ -76,6 +76,7 @@ Operation modes:
+   -i, --install            copy missing auxiliary files
+       --no-recursive       don't rebuild sub-packages
+   -s, --symlink            with -i, install symbolic links instead of copies
++  -x, --exclude=STEPS	   steps we should not run	   
+   -m, --make               when applicable, re-run ./configure && make
+   -W, --warnings=CATEGORY  report the warnings falling in CATEGORY [syntax]
+ 
+@@ -138,6 +139,13 @@ my $run_make = 0;
+ # Recurse into subpackages
+ my $recursive = 1;
+ 
++# Steps to exclude
++my @exclude;
++my @ex;
++
++my $uses_gettext;
++my $configure_ac;
++
+ ## ---------- ##
+ ## Routines.  ##
+ ## ---------- ##
+@@ -155,6 +163,7 @@ sub parse_args ()
+ 	  'B|prepend-include=s'	 => \@prepend_include,
+ 	  'i|install'            => \$install,
+ 	  's|symlink'            => \$symlink,
++	  'x|exclude=s'			 => \@exclude,
+ 	  'm|make'               => \$run_make,
+ 	  'recursive!'           => \$recursive);
+ 
+@@ -164,6 +173,8 @@ sub parse_args ()
+   parse_WARNINGS;
+   parse_warnings '--warnings', @warning;
+ 
++  @exclude = map { split /,/ } @exclude;
++
+   # Even if the user specified a configure.ac, trim to get the
+   # directory, and look for configure.ac again.  Because (i) the code
+   # is simpler, and (ii) we are still able to diagnose simultaneous
+@@ -257,6 +268,11 @@ sub run_aclocal ($$)
+ {
+   my ($aclocal, $flags) = @_;
+ 
++  @ex = grep (/^aclocal$/, @exclude);
++  if ($#ex != -1) {
++	  return;
++  }
++
+   # aclocal 1.8+ does all this for free.  It can be recognized by its
+   # --force support.
+   if ($aclocal_supports_force)
+@@ -370,7 +386,10 @@ sub autoreconf_current_directory ()
+     }
+   else
+     {
+-      xsystem_hint ("autopoint is needed because this package uses Gettext", "$autopoint");
++	  @ex = grep (/^autopoint$/, @exclude);
++		if ($#ex == -1) {
++			xsystem_hint ("autopoint is needed because this package uses Gettext", "$autopoint");
++		}
+     }
+ 
+ 
+@@ -534,7 +553,10 @@ sub autoreconf_current_directory ()
+ 	{
+ 	  $libtoolize .= " --ltdl";
+ 	}
+-      xsystem_hint ("libtoolize is needed because this package uses Libtool", $libtoolize);
++	  @ex = grep (/^libtoolize$/, @exclude);
++	  if ($#ex != -1) {
++		xsystem_hint ("libtoolize is needed because this package uses Libtool", $libtoolize);
++	  }
+       $rerun_aclocal = 1;
+     }
+   else
+@@ -595,7 +617,10 @@ sub autoreconf_current_directory ()
+     }
+   else
+     {
+-      xsystem ($autoheader);
++	  @ex = grep (/^autoheader$/, @exclude);
++	  if ($#ex != -1) {
++		  xsystem ("$autoheader");
++	  }
+     }
+ 
+ 
+@@ -612,7 +637,10 @@ sub autoreconf_current_directory ()
+       # We should always run automake, and let it decide whether it shall
+       # update the file or not.  In fact, the effect of `$force' is already
+       # included in `$automake' via `--no-force'.
+-      xsystem ($automake);
++	  @ex = grep (/^automake$/, @exclude);
++	  if ($#ex != -1) {
++		xsystem ($automake);
++	  }
+     }
+ 
+ 
+@@ -636,7 +664,10 @@ sub autoreconf_current_directory ()
+ 	    }
+ 	  else
+ 	    {
+-	      xsystem ("$make");
++		  @ex = grep (/^make$/, @exclude);
++		  if ($#ex != -1) {
++			xsystem ("$make");
++		  }
+ 	    }
+ 	}
+     }
+-- 
+1.6.5.2
+

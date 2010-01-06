@@ -1,0 +1,25 @@
+From ad2cb3b85d2b4ae54e4f5d5f1512f34f362d1a43 Mon Sep 17 00:00:00 2001
+From: aalonso <aalonso00@gmail.com>
+Date: Tue, 15 Dec 2009 00:31:19 -0600
+Subject: [PATCH] config-site
+
+---
+ lib/autoconf/general.m4 |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/lib/autoconf/general.m4 b/lib/autoconf/general.m4
+index 31ffef9..bbd7779 100644
+--- a/lib/autoconf/general.m4
++++ b/lib/autoconf/general.m4
+@@ -1893,7 +1893,7 @@ else
+   ac_site_file1=$ac_default_prefix/share/config.site
+   ac_site_file2=$ac_default_prefix/etc/config.site
+ fi
+-for ac_site_file in "$ac_site_file1" "$ac_site_file2"
++for ac_site_file in $ac_site_file1 "$ac_site_file2"
+ do
+   test "x$ac_site_file" = xNONE && continue
+   if test -r "$ac_site_file"; then
+-- 
+1.6.5.2
+

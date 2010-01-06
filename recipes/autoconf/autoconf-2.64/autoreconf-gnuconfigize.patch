@@ -1,0 +1,44 @@
+From 921cd06eb20f44d0ce5bd349887a61e7c8dcf412 Mon Sep 17 00:00:00 2001
+From: aalonso <aalonso00@gmail.com>
+Date: Tue, 15 Dec 2009 00:26:53 -0600
+Subject: [PATCH] autoreconf-gnuconfigize
+
+---
+ bin/autoreconf.in |    7 ++++++-
+ 1 files changed, 6 insertions(+), 1 deletions(-)
+
+diff --git a/bin/autoreconf.in b/bin/autoreconf.in
+index f89efd4..56ad436 100644
+--- a/bin/autoreconf.in
++++ b/bin/autoreconf.in
+@@ -58,7 +58,7 @@ use strict;
+ $help = "Usage: $0 [OPTION]... [DIRECTORY]...
+ 
+ Run `autoconf' (and `autoheader', `aclocal', `automake', `autopoint'
+-(formerly `gettextize'), and `libtoolize' where appropriate)
++(formerly `gettextize'), `libtoolize', and `gnu-configize'  where appropriate)
+ repeatedly to remake the GNU Build System files in specified
+ DIRECTORIES and their subdirectories (defaulting to `.').
+ 
+@@ -117,6 +117,7 @@ my $aclocal    = $ENV{'ACLOCAL'}    || 'aclocal';
+ my $libtoolize = $ENV{'LIBTOOLIZE'} || 'libtoolize';
+ my $autopoint  = $ENV{'AUTOPOINT'}  || 'autopoint';
+ my $make       = $ENV{'MAKE'}       || 'make';
++my $gnuconfigize = $ENV{'GNUCONFIGIZE'} || 'gnu-configize';
+ 
+ # --install -- as --add-missing in other tools.
+ my $install = 0;
+@@ -645,6 +646,10 @@ sub autoreconf_current_directory ()
+ 	  }
+     }
+ 
++  @ex = grep (/^gnu-configize$/, @exclude);
++  if ($#ex == -1) {
++	      xsystem ("$gnuconfigize");
++  }
+ 
+   # -------------- #
+   # Running make.  #
+-- 
+1.6.5.2
+

@@ -1,0 +1,27 @@
+From a0dc3eaaf7a7b5d5f523909e2799591d2d88bc7c Mon Sep 17 00:00:00 2001
+From: aalonso <aalonso00@gmail.com>
+Date: Mon, 14 Dec 2009 23:05:56 -0600
+Subject: [PATCH] autoheader-nonfatal-warnings
+
+---
+ bin/autoheader.in |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/bin/autoheader.in b/bin/autoheader.in
+index 9f9fba3..07c7ff6 100644
+--- a/bin/autoheader.in
++++ b/bin/autoheader.in
+@@ -282,8 +282,8 @@ $out->close;
+ 	}
+ 
+     }
+-  exit 1
+-    if keys %symbol;
++#  exit 1
++#    if keys %symbol;
+ }
+ 
+ update_file ("$tmp/config.hin", "$config_h_in", $force);
+-- 
+1.6.5.2
+

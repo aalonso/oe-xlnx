@@ -1,0 +1,25 @@
+From 3f4514c8279c1869483b83430b91635466c102be Mon Sep 17 00:00:00 2001
+From: aalonso <aalonso00@gmail.com>
+Date: Tue, 15 Dec 2009 00:10:19 -0600
+Subject: [PATCH] autoreconf-foreign
+
+---
+ bin/autoreconf.in |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+diff --git a/bin/autoreconf.in b/bin/autoreconf.in
+index acd9794..f89efd4 100644
+--- a/bin/autoreconf.in
++++ b/bin/autoreconf.in
+@@ -197,6 +197,8 @@ sub parse_args ()
+   $aclocal_supports_force = `$aclocal --help 2>/dev/null` =~ /--force/;
+   $automake_supports_force_missing = `$automake --help 2>/dev/null` =~ /--force-missing/;
+ 
++  $automake .= ' --foreign';
++
+   # Dispatch autoreconf's option to the tools.
+   # --include;
+   $aclocal    .= join (' -I ', '', map { shell_quote ($_) } @include);
+-- 
+1.6.5.2
+
