@@ -30,6 +30,7 @@ set_arch() {
 		x86_64*)  ARCH=x86_64 ;;
 	        avr32*)   ARCH=avr32 ;;
                 bfin*)    ARCH=blackfin ;;
+        microblaze*) ARCH=microblaze ;;
 	esac
 }
 
